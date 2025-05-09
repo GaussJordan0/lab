@@ -33,7 +33,7 @@ export default function Page() {
     <div className="h-screen flex items-center justify-center">
         <div className="absolute bottom-[30%] left-[32%]">Inspired by <span className="text-[#FF4500]">Rauno</span> <br /> Developed by <span className="text-[#FF4500]">Gaussjordan</span></div>
       <section
-        className="flex items-center gap-2 relative rounded-2xl px-8 h-full"
+        className="flex items-center gap-3 relative rounded-2xl px-8 h-full"
         ref={wrapperRef}
         onMouseMove={handleMouseMove}
       >
@@ -58,20 +58,26 @@ const Line = ({ i, mouseX }) => {
     };
     return val - bounds.x - bounds.width / 2;
   });
-  let height = useTransform(distance, [-100, 0, 100], [30, 60, 30]);
+  let height = useTransform(distance, [-100, 0, 100], [35, 100, 35]);
+  let smallheight = useTransform(distance, [-100, 0, 100], [30, 80, 30]);
+  const smallmodifiedHeight = useSpring(smallheight,{
+    damping: 10.1,
+    stiffness: 1000,
+    mass: 2.1,
+  });
   const modifiedHeight = useSpring(height,{
-    damping: 20.1,
-    stiffness: 500,
-    mass: 0.1,
+    damping: 10.1,
+    stiffness: 1000,
+    mass: 2.1,
   });
 
   return (
     <motion.div
       ref={lineRef}
-      style={{ height: modifiedHeight }}
-      initial={{ height: 30 }}
+      style={{ height: i % 5 === 0 ? modifiedHeight : smallmodifiedHeight }}
+      initial={{ height: i % 5 === 0 ? 35 : 30 }}
       className={`w-[1px] ${
-        i % 5 === 0 ? "bg-white" : "bg-white opacity-30"
+        i % 5 === 0 ? "bg-white translate-y-[-2.5px]" : "bg-white opacity-30"
       }`}
     ></motion.div>
   );
